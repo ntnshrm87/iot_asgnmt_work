@@ -15,3 +15,19 @@
 5. Activate the virtualenv.
 [root@node231:~/iot_asgnmt# source inf/bin/activate]
 
+###########################################
+######## Steps to install InfluxDB ########
+###########################################
+
+1. Update and Upgrade the system first.
+[sudo apt-get update]
+[sudo apt-get upgrade]
+
+2. Installing Influxdb
+[(inf)root@node231:~/iot_asgnmt# curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -]
+[(inf)root@node231:~/iot_asgnmt# source /etc/l~/iotsb-release]
+[(inf)root@node231:~/iot_asgnmt# echo "deb https://repos.influxdata.com/${DISTRIB_ID,,} ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/influxdb.list]
+[(inf) root@node231:~/iot_asgnmt# sudo apt-get update && sudo apt-get install influxdb]
+[(inf) root@node231:~/iot_asgnmt# sudo service influxdb start
+
+
