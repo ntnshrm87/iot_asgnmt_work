@@ -28,6 +28,42 @@
 [(inf)root@node231:~/iot_asgnmt# source /etc/l~/iotsb-release]
 [(inf)root@node231:~/iot_asgnmt# echo "deb https://repos.influxdata.com/${DISTRIB_ID,,} ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/influxdb.list]
 [(inf) root@node231:~/iot_asgnmt# sudo apt-get update && sudo apt-get install influxdb]
-[(inf) root@node231:~/iot_asgnmt# sudo service influxdb start
+[(inf) root@node231:~/iot_asgnmt# sudo service influxdb start]
 
+###########################################
+####### Creating Database and Users #######
+###########################################
+
+3. Open InfluxDB shell:
+> CREATE DATABASE serverStats
+> CREATE USER "inf-adm" WITH PASSWORD 'Inf@zenatix#$!' WITH ALL PRIVILEGES
+> CREATE USER "abhay" WITH PASSWORD 'Abhay@nitin1"
+> SHOW USERS
+user    admin
+----    -----
+abhay   false
+inf-adm true
+> GRANT ALL ON "serverStats" TO "abhay"
+> SHOW GRANTS FOR "abhay"
+database    privilege
+--------    ---------
+serverStats ALL PRIVILEGES
+
+
+4. Enable auth for [http] in config file and after restart
+inf) root@node231:~/iot_asgnmt# influx -precision rfc3339
+Connected to http://localhost:8086 version 1.5.2
+InfluxDB shell version: 1.5.2
+> SHOW DATABASES
+ERR: unable to parse authentication credentials
+Warning: It is possible this error is due to not setting a database.
+Please set a database with the command "use <database>".
+> USE serverStats
+ERR: unable to parse authentication credentials
+DB does not exist!
+> auth
+username: abhay
+password: 
+> USE serverStats
+Using database serverStats
 
