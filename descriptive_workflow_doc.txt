@@ -19,11 +19,11 @@
 ######## Steps to install InfluxDB ########
 ###########################################
 
-1. Update and Upgrade the system first.
+6. Update and Upgrade the system first.
 [sudo apt-get update]
 [sudo apt-get upgrade]
 
-2. Installing Influxdb
+7. Installing Influxdb
 [(inf)root@node231:~/iot_asgnmt# curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -]
 [(inf)root@node231:~/iot_asgnmt# source /etc/l~/iotsb-release]
 [(inf)root@node231:~/iot_asgnmt# echo "deb https://repos.influxdata.com/${DISTRIB_ID,,} ${DISTRIB_CODENAME} stable" | sudo tee /etc/apt/sources.list.d/influxdb.list]
@@ -34,7 +34,7 @@
 ####### Creating Database and Users #######
 ###########################################
 
-3. Open InfluxDB shell:
+8. Open InfluxDB shell:
 > CREATE DATABASE serverStats
 > CREATE USER "inf-adm" WITH PASSWORD 'Inf@zenatix#$!' WITH ALL PRIVILEGES
 > CREATE USER "abhay" WITH PASSWORD 'Abhay@nitin1"
@@ -50,7 +50,7 @@ database    privilege
 serverStats ALL PRIVILEGES
 
 
-4. Enable auth for [http] in config file and after restart
+9. Enable auth for [http] in config file and after restart
 inf) root@node231:~/iot_asgnmt# influx -precision rfc3339
 Connected to http://localhost:8086 version 1.5.2
 InfluxDB shell version: 1.5.2
@@ -66,4 +66,42 @@ username: abhay
 password: 
 > USE serverStats
 Using database serverStats
+
+######################################################
+######## Python script to fetch server stats #########
+######################################################
+
+10. Write Python script to get the data from server and write that in database.
+[accessData.py]
+
+11. Install influxdb api for python3.
+[pip3 install influxdb]
+
+12. Run Python script.
+(inf) root@node231:~/iot_asgnmt# python3 accessData.py
+Making connection...
+
+[INFO]: Connection successful...
+Gathering data...
+
+Loading data...
+
+#####################################################
+######### Check in InfluxDB #########################
+#####################################################
+
+13. Check in influxdb 'serverStats' database.
+> SELECT * FROM "serverStats"."autogen"."cpuLoad_proc_port_stats"
+name: cpuLoad_proc_port_stats
+time                           1-min 15-min 5-min LastRunPID ip         open_ports procs_running
+----                           ----- ------ ----- ---------- --         ---------- -------------
+2018-06-29T18:29:32.685468034Z 0.24  0.21   0.20  5192       10.0.0.231 15         216
+
+#####################################################
+##### Cronjob setup to run script automatically #####
+#####################################################
+
+14. Now, set a cronjob to do the same in every 1 minutes.
+*/1 * * * * python3 /root/iot_asgnmt/accessData.py > /tmp/nfluxlogs/logfile.log
+
 
