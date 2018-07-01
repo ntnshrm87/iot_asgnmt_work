@@ -1,0 +1,17 @@
+#########################################
+## Steps to create virtual environment ##
+#########################################
+
+1. ssh nitin@10.0.0.231
+
+2. level up to root privileges
+[nitin@node231:~$ sudo su -]
+
+3. Create a directory as "iot_asgnmt" and change directory to it.
+
+4. Create a python3 virtual environment as "inf"
+[root@node231:~/iot_asgnmt# python3 -m virtualenv inf]
+
+5. Activate the virtualenv.
+[root@node231:~/iot_asgnmt# source inf/bin/activate]
+
