@@ -104,4 +104,88 @@ time                           1-min 15-min 5-min LastRunPID ip         open_por
 14. Now, set a cronjob to do the same in every 1 minutes.
 */1 * * * * python3 /root/iot_asgnmt/accessData.py > /tmp/nfluxlogs/logfile.log
 
+#################################################
+####### Grafana installation ####################
+#################################################
 
+15. Install grafana.
+(inf) root@node231:~/iot_asgnmt# wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_5.1.4_amd64.deb
+--2018-07-01 09:46:00--  https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_5.1.4_amd64.deb
+Resolving s3-us-west-2.amazonaws.com (s3-us-west-2.amazonaws.com)... 54.231.185.56
+Connecting to s3-us-west-2.amazonaws.com (s3-us-west-2.amazonaws.com)|54.231.185.56|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 52631282 (50M) [application/x-debian-package]
+Saving to: ‘grafana_5.1.4_amd64.deb’
+
+grafana_5.1.4_amd64.deb         100%[============================================================>]  50.19M   261KB/s    in 4m 30s  
+
+2018-07-01 09:50:32 (191 KB/s) - ‘grafana_5.1.4_amd64.deb’ saved [52631282/52631282]
+
+You have new mail in /var/mail/root
+
+(inf) root@node231:~/iot_asgnmt# sudo apt-get install -y adduser libfontconfig
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+Note, selecting 'libfontconfig1' instead of 'libfontconfig'
+adduser is already the newest version (3.113+nmu3ubuntu4).
+libfontconfig1 is already the newest version (2.11.94-0ubuntu1.1).
+0 upgraded, 0 newly installed, 0 to remove and 39 not upgraded.
+
+(inf) root@node231:~/iot_asgnmt# sudo dpkg -i grafana_5.1.4_amd64.deb
+(Reading database ... 233584 files and directories currently installed.)
+Preparing to unpack grafana_5.1.4_amd64.deb ...
+Unpacking grafana (5.1.4) ...
+Setting up grafana (5.1.4) ...
+Adding system user `grafana' (UID 123) ...
+Adding new user `grafana' (UID 123) with group `grafana' ...
+Not creating home directory `/usr/share/grafana'.
+### NOT starting on installation, please execute the following statements to configure grafana to start automatically using systemd
+ sudo /bin/systemctl daemon-reload
+ sudo /bin/systemctl enable grafana-server
+### You can start grafana-server by executing
+ sudo /bin/systemctl start grafana-server
+Processing triggers for systemd (229-4ubuntu21.2) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+You have new mail in /var/mail/root
+
+(inf) root@node231:~/iot_asgnmt# vim /etc/apt/sources.list
+You have new mail in /var/mail/root
+[Added line: deb https://packagecloud.io/grafana/stable/debian/ stretch main]
+
+(inf) root@node231:~/iot_asgnmt# curl https://packagecloud.io/gpg.key | sudo apt-key add -
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --  0     0    0     0    0     0      0      0 --:--:--  0:00:03 --  0     0    0     0    0     0      0      0 --:--:--  0:00:05 --  0     0    0     0    0     0      0      0 --:--:--  0:00:06 --  0     0    0     0    0     0      0      0 --:--:--  0:00:06 --100  3889  100  3889    0     0    574      0  0:00:06  0:00:06 --:--:--   914
+OK
+You have new mail in /var/mail/root
+[For adding signed packages]
+
+(inf) root@node231:~/iot_asgnmt# sudo apt-get update && sudo apt-get install grafana
+Hit:1 http://security.ubuntu.com/ubuntu xenial-security InRelease
+Hit:2 https://repos.influxdata.com/ubuntu xenial InRelease
+Hit:3 http://in.archive.ubuntu.com/ubuntu xenial InRelease
+Hit:4 http://in.archive.ubuntu.com/ubuntu xenial-updates InRelease
+Hit:5 http://in.archive.ubuntu.com/ubuntu xenial-backports InRelease
+Get:6 https://packagecloud.io/grafana/stable/debian stretch InRelease [23.2 kB]
+Get:7 https://packagecloud.io/grafana/stable/debian stretch/main amd64 Packages [4,068 B]                                             
+Fetched 27.3 kB in 8s (3,240 B/s)                                                                                                     
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following packages will be upgraded:
+  grafana
+1 upgraded, 0 newly installed, 0 to remove and 39 not upgraded.
+Need to get 54.5 MB of archives.
+After this operation, 7,132 kB of additional disk space will be used.
+Get:1 https://packagecloud.io/grafana/stable/debian stretch/main amd64 grafana amd64 5.2.1 [54.5 MB]
+Fetched 54.5 MB in 3min 6s (292 kB/s)                                                                                                 
+(Reading database ... 234931 files and directories currently installed.)
+Preparing to unpack .../grafana_5.2.1_amd64.deb ...
+Unpacking grafana (5.2.1) over (5.1.4) ...
+Processing triggers for systemd (229-4ubuntu21.2) ...
+Processing triggers for ureadahead (0.100.0-19) ...
+Setting up grafana (5.2.1) ...
+Restarting grafana-server service... OK
+You have new mail in /var/mail/root
